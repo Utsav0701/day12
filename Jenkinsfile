@@ -1,24 +1,16 @@
 pipeline {
     agent any
-
-    environment {
-        MAVEN_HOME =tool 'Maven-3.9.0'
+    tools {
+        maven 'Maven-3.9.0' // Use the name configured in Global Tool Configuration
     }
-
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/Utsav0701/day12.git', branch: 'main'
-            }
-        }
-
-        stage('BUild') {
+        stage('Build') {
             steps {
                 script {
-                    sh 'mnv clean package'
+                    sh 'mvn clean package'
                 }
             }
-        }   
+        }
         stage('Archive Artifacts') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
@@ -27,13 +19,10 @@ pipeline {
     }
     post {
         always {
-            echo 'Finished.'
-        }
-        success {
-            echo 'Succeeded'
+            echo 'Pipeline finished.'
         }
         failure {
-            echo 'failed'
+            echo 'Pipeline failed.'
         }
     }
 }
