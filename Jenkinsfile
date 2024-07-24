@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME =tool 'Mavel-3.9'
+        MAVEN_HOME =tool 'Maven-3.9.0'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Utsav0701/pipeline-task-day12.git', branch: 'master'
+                git url: 'https://github.com/Utsav0701/day12.git', branch: 'main'
             }
         }
 
