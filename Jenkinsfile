@@ -1,26 +1,37 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven-3.9.0' // Use the name configured in Global Tool Configuration
+    environment {
+        MAVEN_HOME = tool 'Maven-3.9.0'
+    }
+    parameters {
+        string(name: 'MAVEN_GOALS', defaultValue: 'clean install', description: 'Maven goals to execute')
+        string(name: 'MAVEN_OPTIONS', defaultValue: '', description: 'Additional Maven options')
     }
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from GitHub repository
                 git url: 'https://github.com/Utsav0701/day12.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                // Build the project using Maven
                 script {
                     withEnv(["PATH+MAVEN=${MAVEN_HOME}/bin"]) {
-                        sh 'mvn clean install'
+                        sh "mvn ${params.MAVEN_OPTIONS} ${params.MAVEN_GOALS}"
                     }
                 }
             }
         }
+
+        stage('Test') {
+            steps {
+                script {
+                    echo 'Test Done'
+                }
+            }
+        }
+
         stage('Archive Artifacts') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
