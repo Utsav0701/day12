@@ -15,9 +15,7 @@ pipeline {
         stage('BUild') {
             steps {
                 script {
-                    withEnv(["PATH+MAVEN=${MAVEN_HOME}\\bin"]) {
-                        sh 'mnv clean package'
-                    }
+                    sh 'mnv clean package'
                 }
             }
         }   
